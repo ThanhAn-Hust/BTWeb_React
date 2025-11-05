@@ -14,7 +14,11 @@
 
     <script type="text/babel">
 
-    const SearchForm = ({keyword}) => {return null;}
+    const SearchForm = ({onChangeValue}) => {
+        return (
+            <input type="text" placeholder="Tìm Username" onChange={(e) => onChangeValue(e.target.value)}/>
+        )
+    }
     
     function AddUser({ onAdd }) {
         return null;
