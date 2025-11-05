@@ -29,7 +29,7 @@
             address: { street: "", suite: "", city: "" }, 
             phone: "", website: ""
         });
-        
+
         // Hàm xử lý khi gõ vào các ô input
         const handleChange = (e) => {
             const { id, value } = e.target;
@@ -121,8 +121,64 @@
                 u.username.toLowerCase().includes(keyword.toLowerCase()) 
         );
 
+        // 1. Khi nhấn nút "Sửa"
+        function editUser(userToEdit) {
+            setEditing({ 
+                ...userToEdit, 
+                address: { ...userToEdit.address } 
+            }); 
+        }
+        
+        // 2. Khi gõ vào form Sửa
+        function handleEditChange(e) {
+            const { id, value } = e.target;
+            
+            // Tương tự AddUser, xử lý nested state 'address'
+            if (["street", "suite", "city"].includes(id)) {
+                setEditing((prev) => ({
+                    ...prev,
+                    address: { ...prev.address, [id]: value }
+                }));
+            } else {
+                setEditing((prev) => ({ ...prev, [id]: value }));
+            }
+        }
+        // 3. Khi nhấn nút "Lưu" (sau khi sửa)
+        function saveUser() {
+            // Nếu id trùng, thay thế bằng user trong state 'editing' 
+            setUsers(prev => 
+                prev.map(u => (u.id === editing.id ? editing : u))
+            ); 
+            setEditing(null); // Đóng form Sửa 
+        }
+
+        if (loading) {
+            return <div>Loading...</div>;
+        }
+
+
         return (
-            <div>                 
+            <div>       
+                {editing && (
+                    <div style={{ border: '1px solid #00f', padding: '10px', margin: '10px 0' }}>
+                        <h4>Chỉnh sửa: {editing.name}</h4>
+                        <label>Name: </label>
+                        <input id="name" type="text" value={editing.name} onChange={handleEditChange} /> 
+                        <br />
+                        <label>Username: </label>
+                        <input id="username" type="text" value={editing.username} onChange={handleEditChange} />
+                        <br />
+                        <label>Email: </label>
+                        <input id="email" type="text" value={editing.email} onChange={handleEditChange} />
+                        <br />
+                        <label>City: </label>
+                        <input id="city" type="text" value={editing.address.city} onChange={handleEditChange} />
+                        <br />
+                        <button onClick={saveUser}>Lưu thay đổi</button>
+                        <button onClick={() => setEditing(null)}>Hủy</button>
+                    </div>
+                )}
+
                 <table border="1" width="100%">
                     <thead>
                         <tr>
