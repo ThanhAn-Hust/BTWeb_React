@@ -67,24 +67,27 @@
             <div>
                 <button onClick={() => setAdding(true)}>Thêm người dùng mới</button> 
                 
-                {/* Hiển thị form khi adding === true */}
                 {adding && (
-                    <div style={{ border: '1px solid #ccc', padding: '10px', marginTop: '10px' }}>
-                        <h4>Thêm người dùng</h4> 
-                        <label>Name: </label>
-                        <input id="name" type="text" value={user.name} onChange={handleChange} />
-                        <br />
-                        <label>Username: </label>
-                        <input id="username" type="text" value={user.username} onChange={handleChange} />
-                        <br />
-                        <label>Email: </label>
-                        <input id="email" type="text" value={user.email} onChange={handleChange} />
-                        <br />
-                        <label>City: </label>
-                        <input id="city" type="text" value={user.address.city} onChange={handleChange} />
-                        <br />
-                        <button onClick={handleAdd}>Lưu</button>
-                        <button onClick={() => setAdding(false)}>Hủy</button>
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <h4>Thêm người dùng</h4> 
+                            <label>Name: </label>
+                            <input id="name" type="text" value={user.name} onChange={handleChange} />
+                            <br />
+                            <label>Username: </label>
+                            <input id="username" type="text" value={user.username} onChange={handleChange} />
+                            <br />
+                            <label>Email: </label>
+                            <input id="email" type="text" value={user.email} onChange={handleChange} />
+                            <br />
+                            <label>City: </label>
+                            <input id="city" type="text" value={user.address.city} onChange={handleChange} />
+                            <br />
+                            <div className="button-group">
+                                <button onClick={handleAdd}>Lưu</button>
+                                <button onClick={() => setAdding(false)}>Hủy</button>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
@@ -152,6 +155,13 @@
             setEditing(null); // Đóng form Sửa 
         }
 
+        function removeUser(id) { 
+            // Hỏi xác nhận trước khi xóa 
+            if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này?")) {
+                setUsers((prev) => prev.filter((u) => u.id !== id));
+            }
+        }
+
         if (loading) {
             return <div>Loading...</div>;
         }
@@ -160,22 +170,26 @@
         return (
             <div>       
                 {editing && (
-                    <div style={{ border: '1px solid #00f', padding: '10px', margin: '10px 0' }}>
-                        <h4>Chỉnh sửa: {editing.name}</h4>
-                        <label>Name: </label>
-                        <input id="name" type="text" value={editing.name} onChange={handleEditChange} /> 
-                        <br />
-                        <label>Username: </label>
-                        <input id="username" type="text" value={editing.username} onChange={handleEditChange} />
-                        <br />
-                        <label>Email: </label>
-                        <input id="email" type="text" value={editing.email} onChange={handleEditChange} />
-                        <br />
-                        <label>City: </label>
-                        <input id="city" type="text" value={editing.address.city} onChange={handleEditChange} />
-                        <br />
-                        <button onClick={saveUser}>Lưu thay đổi</button>
-                        <button onClick={() => setEditing(null)}>Hủy</button>
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <h4>Chỉnh sửa: {editing.name}</h4>
+                            <label>Name: </label>
+                            <input id="name" type="text" value={editing.name} onChange={handleEditChange} /> 
+                            <br />
+                            <label>Username: </label>
+                            <input id="username" type="text" value={editing.username} onChange={handleEditChange} />
+                            <br />
+                            <label>Email: </label>
+                            <input id="email" type="text" value={editing.email} onChange={handleEditChange} />
+                            <br />
+                            <label>City: </label>
+                            <input id="city" type="text" value={editing.address.city} onChange={handleEditChange} />
+                            <br />
+                            <div className="button-group">
+                                <button onClick={saveUser}>Lưu thay đổi</button>
+                                <button onClick={() => setEditing(null)}>Hủy</button>
+                            </div>
+                        </div>
                     </div>
                 )}
 
@@ -200,7 +214,7 @@
                                 <td>{u.address.city}</td> 
                                 <td>
                                     <button onClick={() => editUser(u)}>Sửa</button> 
-                                    <button>Xóa</button> 
+                                    <button onClick={() => removeUser(u.id)}>Xóa</button> 
                                 </td>
                             </tr>
                         ))}
