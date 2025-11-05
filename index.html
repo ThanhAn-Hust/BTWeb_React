@@ -13,20 +13,49 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        
-        // Tạo component root
-        function App() {
-            return (
-                <div>
-                    <h1>Quản lý người dùng</h1>
-                </div>
-            );
-        }
 
-        // Tìm thẻ <div id="root"> và render App vào 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+    const SearchForm = ({keyword}) => {return null;}
+    
+    function AddUser({ onAdd }) {
+        return null;
+    }
+
+    function ResultTable({ keyword, user, onAdded }) {
+        return null;
+    }
+
+    // App component
+    function App() {
+        // kw: lưu từ khóa tìm kiếm
+        const [kw, setKeyword] = React.useState(""); 
+        // newUser: lưu người dùng mới được thêm từ Form
+        const [newUser, setNewUser] = React.useState(null); 
+
+        return (
+            <div>
+                <h1>Quản lý người dùng</h1>
+                
+                {/* Truyền Props */}
+                <SearchForm onChangeValue={setKeyword} />
+                
+                {/* Truyền Props */}
+                <AddUser onAdd={setNewUser} />
+                
+                {/* Truyền Props */}
+                <ResultTable
+                    keyword={kw} 
+                    user={newUser} 
+                    onAdded={() => setNewUser(null)} 
+                />
+            </div>
+        );
+    }
+
+    // 5. Render 
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+
+</script>
 
 </body>
 </html>
